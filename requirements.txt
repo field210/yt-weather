@@ -1,0 +1,6 @@
+python-dotenv==0.10.3
+pushbullet.py==0.11.0
+selenium==3.141.0
+beautifulsoup4==4.7.1
+lxml==4.3.1
+subprocess32==3.5.2
