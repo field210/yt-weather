@@ -92,7 +92,7 @@ def get_rainfall(html):
     data = [d for d in data if d]
 
     # get date
-    times = [time[0] for index, time in enumerate(data[0]) if index != 0]
+    times = ['{:02d}'.format(time[0]) for index, time in enumerate(data[0]) if index != 0]
     # get rainfall
     rainfalls = [time[1] for index, time in enumerate(data[-1]) if index != 0]
 
