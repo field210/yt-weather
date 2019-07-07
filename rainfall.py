@@ -12,9 +12,14 @@ from bs4 import BeautifulSoup
 
 def calculate():
     # wunderground always starts from sunday
-    today = datetime.date.today()
-    lastweek = today - datetime.timedelta(days=7)
-    result = compute_result([lastweek, today])
+    thisweek = datetime.date.today()
+    weekday = thisweek.weekday()
+    # if this week is sunday, then no data are available
+    if weekday == 6:
+        thisweek = thisweek - datetime.timedelta(days=1)
+    # calculate last week based on this week
+    lastweek = thisweek - datetime.timedelta(days=7)
+    result = compute_result([lastweek, thisweek])
 
     return result
 
@@ -74,6 +79,7 @@ def get_html(date_str):
 
     # Selenium hands the page source to Beautiful Soup
     html = BeautifulSoup(driver.page_source, 'lxml')
+    driver.quit()
 
     return html
 
