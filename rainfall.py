@@ -79,7 +79,7 @@ def get_html(date_str):
 
     # Selenium hands the page source to Beautiful Soup
     html = BeautifulSoup(driver.page_source, 'lxml')
-    driver.quit()
+    # driver.quit()
 
     return html
 
