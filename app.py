@@ -5,10 +5,10 @@ from setting import *
 import rainfall
 import push
 from apscheduler.schedulers.blocking import BlockingScheduler
-
+from apscheduler.triggers.cron import CronTrigger
 
 timezone = os.getenv('TIMEZONE')
-hour_of_day = os.getenv('HOUR_OF_DAY')
+crontab = os.getenv('CRONTAB')
 
 
 def send_rainfall():
@@ -21,16 +21,5 @@ def send_rainfall():
 
 
 scheduler = BlockingScheduler(timezone=timezone)
-
-
-@scheduler.scheduled_job('interval', minutes=3)
-def job():
-    send_rainfall()
-
-
-@scheduler.scheduled_job('cron', hour=hour_of_day)
-def scheduled_job():
-    send_rainfall()
-
-
+scheduler.add_job(send_rainfall, CronTrigger.from_crontab(crontab))
 scheduler.start()
