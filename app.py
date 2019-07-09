@@ -21,5 +21,5 @@ def send_rainfall():
 
 
 scheduler = BlockingScheduler(timezone=timezone)
-scheduler.add_job(send_rainfall, CronTrigger.from_crontab(crontab))
+scheduler.add_job(send_rainfall, CronTrigger.from_crontab(crontab, timezone=timezone))
 scheduler.start()
