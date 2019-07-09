@@ -1,6 +1,6 @@
 # Dockerfile
 
-# Using the official with Python 3.6 image
+# Using the official image with Python 3.6 image
 FROM python:3.6.8-alpine3.10
 
 RUN apk update && apk add g++ gcc libxslt-dev chromium chromium-chromedriver
@@ -19,5 +19,5 @@ RUN pip install -r requirements.txt
 RUN adduser -D myuser
 USER myuser
 
-# Run the Flask application
-CMD python app.py
+# Run the  application
+CMD python -u app.py

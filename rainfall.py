@@ -43,16 +43,17 @@ def compute_result(dts):
 
     # combine to result
     result = ''
+    nl = '\n'
     for time, rainfall in zip(times, rainfalls):
-        result = result+'{} : {} \n'.format(time, rainfall)
+        result = f'{result}{time} : {rainfall}{nl}'
 
     return result
 
 
 def get_html(date_str):
     # get html as BeautifulSoup object
-    url_base = 'https://www.wunderground.com/history/weekly/us/nc/morrisville/KRDU/date/{}'
-    url = url_base.format(date_str)
+    station = os.getenv('WEATHER_STATION')
+    url = f'https://www.wunderground.com/history/weekly/{station}/date/{date_str}'
 
     # create a new browser session
     options = Options()
@@ -65,7 +66,7 @@ def get_html(date_str):
     options.add_argument('--enable-automation=false')
     driver = webdriver.Chrome(options=options)
 
-    driver.implicitly_wait(10)
+    # driver.implicitly_wait(10)
     driver.get(url)
 
     delay = int(os.getenv('PAGE_LOADING_DELAY'))
@@ -79,7 +80,8 @@ def get_html(date_str):
 
     # Selenium hands the page source to Beautiful Soup
     html = BeautifulSoup(driver.page_source, 'lxml')
-    # driver.quit()
+    driver.quit()
+    print(f'scraped webpage {station} on {date_str}')
 
     return html
 
@@ -101,5 +103,7 @@ def get_rainfall(html):
     times = ['{:02d}'.format(int(time[0])) for index, time in enumerate(data[0]) if index != 0]
     # get rainfall
     rainfalls = [time[1] for index, time in enumerate(data[-1]) if index != 0]
+
+    print(f'computed rainfalls of {rainfalls} at times of {times}')
 
     return times, rainfalls
