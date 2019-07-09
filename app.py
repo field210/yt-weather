@@ -20,6 +20,6 @@ def send_rainfall():
     push.send_to_device(title, result)
 
 
-scheduler = BlockingScheduler(timezone=timezone)
+scheduler = BlockingScheduler()
 scheduler.add_job(send_rainfall, CronTrigger.from_crontab(crontab, timezone=timezone))
 scheduler.start()
