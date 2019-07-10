@@ -20,7 +20,7 @@ This app can run in two mode: python application and dockerized application.
 ### python application mode
 
 1.  install packages: `pip install -r requirements.txt`
-2.  run app: `pip install -r requirements.txt`
+2.  run app: `python -u app.py`
 
 ### dockerized application mode
 
