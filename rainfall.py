@@ -32,9 +32,10 @@ def compute_result(dts):
         print('calculating rainfall for the week of', dt)
         date_str = dt.strftime('%Y-%m-%d')
         html = get_html(date_str)
-        times_current, rainfalls_current = get_rainfall(html)
-        times = times+times_current
-        rainfalls = rainfalls+rainfalls_current
+        if html:
+            times_current, rainfalls_current = get_rainfall(html)
+            times = times+times_current
+            rainfalls = rainfalls+rainfalls_current
 
     # only reserve X days
     days = int(os.getenv('DAYS'))
@@ -67,6 +68,7 @@ def get_html(date_str):
     driver = webdriver.Chrome(options=options)
 
     # driver.implicitly_wait(10)
+    print(f'loading webpage {url}')
     driver.get(url)
 
     delay = int(os.getenv('PAGE_LOADING_DELAY'))
@@ -75,8 +77,8 @@ def get_html(date_str):
         WebDriverWait(driver, delay).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'observation-table')))
     except TimeoutException:
-        print('Weather page cannot load')
-        sys.exit(1)
+        print(f'failed to load webpage {station} on {date_str}')
+        return
 
     # Selenium hands the page source to Beautiful Soup
     html = BeautifulSoup(driver.page_source, 'lxml')

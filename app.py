@@ -4,11 +4,13 @@ import pytz
 from setting import *
 import rainfall
 import push
+from cron_descriptor import get_description
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 
 timezone = os.getenv('TIMEZONE')
 crontab = os.getenv('CRONTAB')
+crontab_desc = get_description(crontab)
 
 
 def send_rainfall():
@@ -22,4 +24,5 @@ def send_rainfall():
 
 scheduler = BlockingScheduler()
 scheduler.add_job(send_rainfall, CronTrigger.from_crontab(crontab, timezone=timezone))
+print(f'scheduled job to run {crontab_desc}')
 scheduler.start()
